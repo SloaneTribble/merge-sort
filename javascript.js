@@ -3,19 +3,40 @@
  * one or two elements.  Then sort those sub arrays and merge them, then merge the merged sub arrays, etc.
  */
 
+const merge = function mergeLeftAndRight(left, right) {
+  let result = [];
+  while (left.length > 0 && right.length > 0) {
+    if (left[0] < right[0]) {
+      result.push(left.shift());
+    } else {
+      result.push(right.shift());
+    }
+  }
+
+  while (left.length > 0) {
+    result.push(left.shift());
+  }
+  while (right.length > 0) {
+    result.push(right.shift());
+  }
+  return result;
+};
+
 const mergeSort = function divideAndConquer(array) {
   if (array.length === 1) {
     return array;
   }
 
   let midIndex = Math.floor(array.length / 2);
-  console.log(midIndex);
 
   let left = array.slice(0, midIndex);
-  console.log(`left: ${left}`);
 
   let right = array.slice(midIndex);
-  console.log(`right: ${right}`);
+
+  let sortedLeft = mergeSort(left);
+  let sortedRight = mergeSort(right);
+
+  return merge(sortedLeft, sortedRight);
 };
 
-mergeSort([0, 1, 3, 4, 1]);
+console.log(mergeSort([100, -60, 0, 1, 32, 4, 1]));
